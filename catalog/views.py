@@ -35,3 +35,19 @@ class BookListView(generic.ListView):
 class BookDetailView(generic.DetailView):
     model = Book
     paginate_by = 10
+    
+class AuthorListView(generic.ListView):
+    model = Author
+    context_object_name = 'my_author_list'   # su propio nombre para la lista como variable de plantilla
+    template_name = 'author_list.html'  # Especifique su propio nombre/ubicación de plantilla
+    def get_context_data(self, **kwargs):
+        author_list = Author.objects.all()
+        # Call the base implementation first to get the context
+        context = super(AuthorListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context = {'author_list':author_list}
+        return context
+
+class AuthorDetailView(generic.DetailView):
+    model = Author
+    paginate_by = 10
