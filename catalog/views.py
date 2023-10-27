@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from .models import Book, Author, BookInstance, Genre
 from django.views import generic
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+@login_required
 def index(request):
     """
     Función vista para la página inicio del sitio.
@@ -12,15 +15,23 @@ def index(request):
     # Libros disponibles (status = 'a')
     num_instances_available=BookInstance.objects.filter(status__exact='a').count()
     num_authors=Author.objects.count()  # El 'all()' esta implícito por defecto.
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
 
     # Renderiza la plantilla HTML index.html con los datos en la variable contexto
     return render(
         request,
         'index.html',
-        context={'num_books':num_books,'num_instances':num_instances,'num_instances_available':num_instances_available,'num_authors':num_authors},
+        context= {
+        'num_books':num_books,
+        'num_instances':num_instances,
+        'num_instances_available':num_instances_available,
+        'num_authors':num_authors,
+        'num_visits':num_visits,
+    }
     )
-
-class BookListView(generic.ListView):
+    
+class BookListView(LoginRequiredMixin, generic.ListView):
     model = Book
     context_object_name = 'my_book_list'   # su propio nombre para la lista como variable de plantilla
     template_name = 'book_list.html'  # Especifique su propio nombre/ubicación de plantilla
@@ -32,11 +43,11 @@ class BookListView(generic.ListView):
         context = {'book_list':book_list}
         return context
 
-class BookDetailView(generic.DetailView):
+class BookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Book
     paginate_by = 10
-    
-class AuthorListView(generic.ListView):
+  
+class AuthorListView(LoginRequiredMixin, generic.ListView):
     model = Author
     context_object_name = 'my_author_list'   # su propio nombre para la lista como variable de plantilla
     template_name = 'author_list.html'  # Especifique su propio nombre/ubicación de plantilla
@@ -48,6 +59,6 @@ class AuthorListView(generic.ListView):
         context = {'author_list':author_list}
         return context
 
-class AuthorDetailView(generic.DetailView):
+class AuthorDetailView(LoginRequiredMixin, generic.DetailView):
     model = Author
     paginate_by = 10

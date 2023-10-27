@@ -1,4 +1,13 @@
 from django.db import models
+from django.urls import reverse #Used to generate URLs by reversing the URL patterns
+from django.contrib.auth.models import User
+from datetime import date
+
+@property
+def is_overdue(self):
+    if self.due_back and date.today() > self.due_back:
+        return True
+    return False
 
 class Genre(models.Model):
     
@@ -11,9 +20,6 @@ class Genre(models.Model):
         #Cadena que representa a la instancia particular del modelo (p. ej. en el sitio de Administración)
         
         return self.name
-
-
-from django.urls import reverse #Used to generate URLs by reversing the URL patterns
 
 class Language(models.Model):
     """Model representing a Language (e.g. English, French, Japanese, etc.)"""
@@ -81,6 +87,8 @@ class BookInstance(models.Model):
     )
 
     status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='m', help_text='Disponibilidad del libro')
+
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         ordering = ["due_back"]

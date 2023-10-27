@@ -2,7 +2,6 @@
 
 from . import views
 from django.urls import path
-
  
 urlpatterns = [
     path('', views.index, name='index'),
@@ -11,4 +10,3 @@ urlpatterns = [
     path('authors/', views.AuthorListView.as_view(), name='authors'),
     path('author/<int:pk>', views.AuthorDetailView.as_view(), name='author-detail'),
 ]
-
