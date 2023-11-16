@@ -16,4 +16,10 @@
         </dl>
 
   </div>
+
+  {% if perms.catalog.can_mark_returned %} 
+  <li><a href="{% url 'author-update' author.id %}">Actualizar autor</a></li>
+  <li><a href="{% url 'author-delete' author.id %}">Borrar autor</a></li>
+  {% endif %}
+
 {% endblock %}

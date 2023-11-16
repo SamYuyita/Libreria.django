@@ -124,12 +124,12 @@ def renew_book_librarian(request, pk):
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Author
+#from .models import Author
 
 class AuthorCreate(CreateView):
     model = Author
     fields = '__all__'
-    initial={'date_of_death'}
+    #initial={'date_of_death'}
 
 class AuthorUpdate(UpdateView):
     model = Author

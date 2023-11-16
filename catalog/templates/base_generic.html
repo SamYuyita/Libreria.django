@@ -33,7 +33,6 @@
           <li>Staff</li>
           <li><a href="{% url 'all-borrowed' %}">Libros prestados</a></li>
           <li><a href="{% url 'author-create' %}">Crear autor</a></li>
-          <li><a href="{% url 'author-update' %}">Actualizar autor</a></li>
           {% endif %}
         {% else %}
           <li><a href="{% url 'login'%}?next={{request.path}}">Iniciar sesión</a></li>
