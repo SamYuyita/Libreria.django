@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Book, Author, BookInstance, Genre
+from .models import Book, Author, BookInstance, Genre, Language
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -124,7 +124,6 @@ def renew_book_librarian(request, pk):
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-#from .models import Author
 
 class AuthorCreate(CreateView):
     model = Author
@@ -138,3 +137,27 @@ class AuthorUpdate(UpdateView):
 class AuthorDelete(DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
+
+class BookCreate(CreateView):
+    model = Book
+    fields = '__all__'
+
+class BookUpdate(UpdateView):
+    model = Book
+    fields = ['title','author','summary','isbn','genre' ]
+
+class BookDelete(DeleteView):
+    model = Book
+    success_url = reverse_lazy('books')
+
+class BookInstanceCreate(CreateView):
+    model = BookInstance
+    fields = '__all__'
+
+class BookUpdate(UpdateView):
+    model = BookInstance
+    fields = ['imprint','due_back','borrower','status' ]
+
+class BookDelete(DeleteView):
+    model = BookInstance
+    success_url = reverse_lazy('bookinstances')
