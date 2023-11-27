@@ -14,10 +14,22 @@
 
     {% for copy in book.bookinstance_set.all %}
     <hr>
-    <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">{{ copy.get_status_display }}</p>
-    {% if copy.status != 'a' %}<p><strong>Pendiente de devolución:</strong> {{copy.due_back}}</p>{% endif %}
+    <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}
+    text-danger{% else %}text-warning{% endif %}">{{ copy.get_status_display }}</p>
+    {% if copy.status != 'a' %}<p><strong>Pendiente de devolución:</strong> 
+      {{copy.due_back}}</p>{% endif %}
     <p><strong>Impresión:</strong> {{copy.imprint}}</p>
     <p class="text-muted"><strong>Id:</strong> {{copy.id}}</p>
+    {% comment %} <li><a href="{% url 'bookinstance-update' bookinstance.id %}">Actualizar copia</a></li>
+    <li><a href="{% url 'bookinstance-delete' bookinstance.id %}">Borrar copia</a></li>   {% endcomment %}
     {% endfor %}
   </div>
+
+  {% if perms.catalog.can_mark_returned %} 
+  <li><a href="{% url 'book-update' book.id %}">Actualizar libro</a></li>
+  <li><a href="{% url 'book-delete' book.id %}">Borrar libro</a></li>
+  <li><a href="{% url 'bookinstance-create' %}">Crear copia</a></li>
+  
+  {% endif %}
+
 {% endblock %}

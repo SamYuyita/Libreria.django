@@ -55,6 +55,22 @@ class BookListView(LoginRequiredMixin, generic.ListView):
 class BookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Book
     paginate_by = 10
+    
+class BookInstanceListView(LoginRequiredMixin, generic.ListView):
+    model = BookInstance
+    context_object_name = 'my_bookinstance_list'   # su propio nombre para la lista como variable de plantilla
+    template_name = 'bookinstance_list.html'  # Especifique su propio nombre/ubicación de plantilla
+    def get_context_data(self, **kwargs):
+        bookinstance_list = BookInstance.objects.all()
+        # Call the base implementation first to get the context
+        context = super(BookInstanceListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context = {'bookinstance_list':bookinstance_list}
+        return context
+
+class BookInstanceDetailView(LoginRequiredMixin, generic.DetailView):
+    model = BookInstance
+    paginate_by = 10
   
 class AuthorListView(LoginRequiredMixin, generic.ListView):
     model = Author
@@ -152,12 +168,12 @@ class BookDelete(DeleteView):
 
 class BookInstanceCreate(CreateView):
     model = BookInstance
-    fields = '__all__'
+    fields = ['book','imprint','due_back','borrower','status' ]
 
-class BookUpdate(UpdateView):
+class BookInstanceUpdate(UpdateView):
     model = BookInstance
     fields = ['imprint','due_back','borrower','status' ]
 
-class BookDelete(DeleteView):
+class BookInstanceDelete(DeleteView):
     model = BookInstance
     success_url = reverse_lazy('bookinstances')

@@ -24,6 +24,7 @@
       <ul class="sidebar-nav">
           <li><a href="{% url 'index' %}">Inicio</a></li>
           <li><a href="{% url 'books' %}">Libros</a></li>
+          <li><a href="{% url 'bookinstances' %}">Copias</a></li>
           <li><a href="{% url 'authors' %}">Autores</a></li>
           {% if user.is_authenticated %}
           <li>User: {{ user.get_username }}</li>
@@ -33,6 +34,8 @@
           <li>Staff</li>
           <li><a href="{% url 'all-borrowed' %}">Libros prestados</a></li>
           <li><a href="{% url 'author-create' %}">Crear autor</a></li>
+          <li><a href="{% url 'book-create' %}">Crear libro</a></li>
+          <li><a href="{% url 'bookinstance-create' %}">Crear copia</a></li>
           {% endif %}
         {% else %}
           <li><a href="{% url 'login'%}?next={{request.path}}">Iniciar sesión</a></li>
