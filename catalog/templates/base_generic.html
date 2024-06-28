@@ -26,6 +26,9 @@
           <li><a href="{% url 'books' %}">Libros</a></li>
           <li><a href="{% url 'bookinstances' %}">Copias</a></li>
           <li><a href="{% url 'authors' %}">Autores</a></li>
+      </ul>
+
+      <ul class="sidebar-nav">
           {% if user.is_authenticated %}
           <li>User: {{ user.get_username }}</li>
           <li><a href="{% url 'my-borrowed' %}">Mis libros prestados</a></li>

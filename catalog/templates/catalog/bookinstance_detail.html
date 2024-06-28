@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Copia: {{ bookinstance.book.title }}</h1>
+
+<p><strong>Autor:</strong> <a href="{{ bookinstance.book.author.get_absolute_url }}">{{ bookinstance.book.author }}</a></p>
+
+<p><strong>Impresión:</strong> {{ bookinstance.imprint }}</p>
+<p><strong>Estado:</strong> {{ bookinstance.get_status_display }} {% if bookinstance.status != 'a' %} (FV: {{bookinstance.due_back}}){% endif %}</p>
+
+<hr>
+<ul>
+  <li>
+    <a href="{{ bookinstance.book.get_absolute_url }}">Todas las copias</a></p>
+  </li>
+</ul>
+{% endblock %}
+
+
+{% block sidebar %}
+  {{ block.super }}
+
+  {% if perms.catalog.change_bookinstance or perms.catalog.delete_bookinstance %}
+  <hr>
+  <ul class="sidebar-nav">
+    {% if perms.catalog.change_bookinstance %}
+      <li><a href="{% url 'bookinstance-update' bookinstance.id %}">Actualizar copia</a></li>
+    {% endif %}
+    {% if perms.catalog.delete_bookinstance %}
+      <li><a href="{% url 'bookinstance-delete' bookinstance.id %}">Borrar copia</a></li>
+    {% endif %}
+  </ul>
+  {% endif %}
+
+{% endblock %}
